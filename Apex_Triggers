@@ -1,15 +1,9 @@
-trigger LaptopBooking on Laptop_Bookings__c (After insert,after update) {
-
- 
-
-    if(trigger.isAfter && ( trigger.isInsert || trigger.isupdate))
-
-    {
-
-    LaptopBookingHandler.sendEmailNotification(trigger.new);
-
+trigger LaptopBooking on Laptop_Bookings__c (after insert, after update) {
+    if (Trigger.isAfter && (Trigger.isInsert || Trigger.isUpdate)) {
+        try {
+            LaptopBookingHandler.sendEmailNotification(Trigger.new);
+        } catch (System.EmailException e) {
+            System.debug('Email sending failed due to limit or other issue: ' + e.getMessage());
         }
-
-
-
+    }
 }
